@@ -11,6 +11,7 @@ public class QuizActivity extends AppCompatActivity {
     private Button mTrueButton;
     private Button mFalseButton;
     private Button mNextButton;
+    private Button mPrevButton;
     private TextView mQuestionTextView;
     private TrueFalse[] mQuestionBank = new TrueFalse[]{
             new TrueFalse(R.string.question_oceans, true),
@@ -50,6 +51,17 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick (View v) {
                 checkAnswer(false);
+            }
+        });
+
+        mPrevButton = (Button) findViewById(R.id.prev_button);
+        mPrevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mCurrentIndex == 0)
+                    mCurrentIndex = mQuestionBank.length;
+                mCurrentIndex--;
+                updateQuestion();
             }
         });
 
