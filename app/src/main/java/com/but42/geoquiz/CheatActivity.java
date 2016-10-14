@@ -15,6 +15,9 @@ public class CheatActivity extends Activity {
     public static final String EXTRA_ANSWER_IS_TRUE = "com.but42.geoquiz.answer_is_true";
     public static final String EXTRA_ANSWER_SHOWN = "com.but42.geoquiz.answer_shown";
 
+    private static final String KEY_RESULT = "result";
+    private boolean mResult = false;
+
     private boolean mAnswerIsTrue;
     private TextView mAnswerTextView;
     private Button mShowAnswerButton;
@@ -34,19 +37,34 @@ public class CheatActivity extends Activity {
 
         mAnswerTextView = (TextView) findViewById(R.id.answerTextView);
 
-        setAnswerShownResult(false);
+        if (savedInstanceState != null) {
+            mResult = savedInstanceState.getBoolean(KEY_RESULT);
+            setText(mAnswerIsTrue);
+        }
+
+        setAnswerShownResult(mResult);
 
         mShowAnswerButton = (Button) findViewById(R.id.showAnswerButton);
         mShowAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mAnswerIsTrue)
-                    mAnswerTextView.setText(R.string.true_button);
-                else
-                    mAnswerTextView.setText(R.string.false_button);
-                setAnswerShownResult(true);
+                setText(mAnswerIsTrue);
+                mResult = true;
+                setAnswerShownResult(mResult);
             }
         });
     }
 
+    private void setText(boolean mAnswerIsTrue) {
+        if (mAnswerIsTrue)
+            mAnswerTextView.setText(R.string.true_button);
+        else
+            mAnswerTextView.setText(R.string.false_button);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_RESULT, mResult);
+    }
 }
